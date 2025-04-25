@@ -19,7 +19,9 @@ class CustomerController extends Controller
         $customers = Customer::find($id);
         return view('customers.show', compact('customers'));
     }
-
+    public function create() {
+        return view('customers.create', compact('customers'));
+    }
     public function edit($id)
     {
         $customers = Customer::find($id);

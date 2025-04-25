@@ -1,8 +1,25 @@
-<h1>Detail Customer</h1>
+@extends('layouts.app')
 
-<p><strong>Nama:</strong> {{ $customers['name'] }}</p>
-<p><strong>Email:</strong> {{ $customers['email'] }}</p>
+@section('content')
+<div class="container mt-5">
+    <h1 class="mb-4">Detail Customer</h1>
 
-<a href="{{ route('customers.edit', $customers['id']) }}">Edit</a>
-<br>
-<a href="{{ route('customers.index') }}">Kembali ke daftar</a>
+    @if ($customers)
+        <div class="card">
+            <div class="card-body">
+                <p><strong>Nama:</strong> {{ $customers['name'] }}</p>
+                <p><strong>Email:</strong> {{ $customers['email'] }}</p>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ route('customers.edit', $customers['id']) }}" class="btn btn-warning">Edit</a>
+            <a href="{{ route('customers.index') }}" class="btn btn-secondary">Kembali ke daftar</a>
+        </div>
+    @else
+        <div class="alert alert-danger">
+            Data customer tidak ditemukan.
+        </div>
+    @endif
+</div>
+@endsection
