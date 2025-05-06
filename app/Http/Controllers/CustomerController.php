@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
@@ -16,35 +17,66 @@ class CustomerController extends Controller
     // Tampilkan detail customer
     public function show($id)
     {
-        $customers = Customer::find($id);
-        return view('customers.show', compact('customers'));
+        $customer = Customer::find($id);
+
+        if (!$customer) {
+            return redirect()->route('customers.index')->with('error', 'Customer tidak ditemukan.');
+        }
+
+        return view('customers.show', compact('customer'));
     }
-    public function create() {
-        return view('customers.create', compact('customers'));
+
+    // Form tambah customer
+    public function create()
+    {
+        return view('customers.create');
     }
+
+    // Simpan customer baru ke database
+    public function store(Request $request)
+    {
+        Customer::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+        ]);
+
+        return redirect()->route('customers.index')->with('success', 'Customer berhasil ditambahkan.');
+    }
+
+    // Form edit customer
     public function edit($id)
     {
-        $customers = Customer::find($id);
-        return view('customers.edit', compact('customers'));
+        $customer = Customer::find($id);
+
+        if (!$customer) {
+            return redirect()->route('customers.index')->with('error', 'Customer tidak ditemukan.');
+        }
+
+        return view('customers.edit', compact('customer'));
     }
 
     // Proses update customer
-    public function update($id)
+    public function update(Request $request, $id)
     {
-        $customers = Customer::find($id);
-        $customers['name'] = request('name'); // Update nama customer
-        $customers['email'] = request('email'); // Update email customer
+        $customer = Customer::find($id);
+        if ($customer) {
+            $customer->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+            ]);
+        }
 
-        return redirect()->route('customers.index'); // Redirect ke daftar customer
+        return redirect()->route('customers.index')->with('success', 'Customer berhasil diperbarui.');
     }
+
+    // Hapus customer
     public function destroy($id)
     {
-        // Di sini kita hapus customer dari data dummy
-        $customers = Customer::all();
-        $filteredCustomers = array_filter($customers, function ($customers) use ($id) {
-            return $customers['id'] != $id;
-        });
+        $customer = Customer::find($id);
+        if ($customer) {
+            $customer->delete();
+        }
 
-        return redirect()->route('customers.index'); // Redirect ke daftar customer
+        return redirect()->route('customers.index')->with('success', 'Customer berhasil dihapus.');
     }
 }

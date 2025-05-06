@@ -4,17 +4,17 @@
 <div class="container mt-5">
     <h1 class="mb-4">Edit Customer</h1>
 
-    @if ($customers)
+    @if ($customer)
         <form action="{{ route('customers.index') }}">
             @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">Nama:</label>
-                <input type="text" class="form-control" name="name" value="{{ $customers['name'] }}" required>
+                <input type="text" class="form-control" name="name" value="{{ $customer['name'] }}" required>
             </div>
 
             <div class="mb-3">
                 <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" name="email" value="{{ $customers['email'] }}" required>
+                <input type="email" class="form-control" name="email" value="{{ $customer['email'] }}" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Update</button>

@@ -2,32 +2,24 @@
 
 namespace App\Models;
 
-class Customer
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Customer extends Model
 {
-    // Dummy data
-    protected static function getDummyData()
+    use HasFactory;
+
+    // Izinkan mass assignment untuk kolom name dan email
+    public static function getAll()
     {
-        return [
-            ['id' => 1, 'name' => 'Nico', 'email' => 'nico@example.com'],
-            ['id' => 2, 'name' => 'Yuda', 'email' => 'yuda@example.com'],
-            ['id' => 3, 'name' => 'Meisya', 'email' => 'meisya@example.com'],
-        ];
+        return Customer::all();
     }
 
-    // Ambil semua customer
-    public static function all()
-    {
-        return self::getDummyData();
-    }
-
-    // Cari customer berdasarkan ID
+    // Jika kamu butuh fungsi ambil semua data, ini boleh tetap ada (meskipun Customer::all() sudah cukup)
     public static function find($id)
     {
-        foreach (self::getDummyData() as $customers) {
-            if ($customers['id'] == $id) {
-                return $customers;
-            }
-        }
-        return null;
+        return Customer::where('id', $id)->first();
     }
+
+    // ⚠️ Tidak perlu override find(). Laravel sudah punya method ini.
 }
